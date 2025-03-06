@@ -54,5 +54,13 @@ EOF'
 sudo sed -i 's/3.93.220.110/3.93.220.110/g' /etc/haproxy/haproxy.cfg
 sudo sed -i 's/54.89.213.49/54.89.213.49/g' /etc/haproxy/haproxy.cfg
 
-sudo systemctl enable haproxy
-sudo systemctl restart haproxy
+# Validate the configuration
+sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+
+# Stop conflicting services (e.g., Nginx, Apache)
+sudo service nginx stop
+sudo service apache2 stop
+
+sudo service haproxy restart
+
+sudo service haproxy status
