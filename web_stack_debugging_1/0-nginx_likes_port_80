@@ -1,17 +1,5 @@
 #!/usr/bin/env bash
+#script to automate fix on what is keeping nginx from listening to port 80
 
-apt-get update -y
-
-dpkg -l | grep -qw nginx || apt-get install -y nginx
-
-systemctl start nginx
-
-systemctl enable nginx
-
-ufw allow 80/tcp || true
-
-sed -i 's/^# server {/server {/' /etc/nginx/sites-available/default
-sed -i 's/^#	listen 80 default_server;/	listen 80 default_server;/' /etc/nginx/sites-available/default
-sed -i 's/^#	listen \[::\]:80 default_server;/	listen [::]:80 default_server;/' /etc/nginx/sites-available/default
-
-systemctl restart nginx
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo service nginx restart
